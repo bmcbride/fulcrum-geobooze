@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="A lightweight, responsive web application for submitting data to the Fulcrum Platform.">
+    <meta name="author" content="Bryan McBride">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="assets/img/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="assets/img/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <title>GeoBooze</title>
+    <link href="assets/vendor/bootstrap-v4-alpha2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/leaflet-0.7.7/leaflet.css" rel="stylesheet" >
+    <link href="assets/vendor/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" >
+    <link href="assets/vendor/leaflet-locate-0.52.0/L.Control.Locate.min.css" rel="stylesheet">
+    <link href="assets/css/app.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+      <a class="navbar-brand" href="#"><img src="assets/img/icon.png">Fulcrum GeoBooze</a>
+      <button class="navbar-toggler pull-right" type="button" data-toggle="collapse" data-target="#collapsed-navbar" aria-controls="exCollapsingNavbar" aria-expanded="false" aria-label="Toggle navigation">&#9776;</button>
+      <div class="collapse" id="collapsed-navbar">
+        <div class="bg-inverse p-a-1">
+          <button type="button" class="btn btn-danger btn-block" id="logout-btn">Logout</button>
+          <button type="button" class="btn btn-secondary btn-block" id="about-btn">About</button>
+          <div class="btn-group btn-group-justified" role="group" data-toggle="buttons" id="map-toggle-btn">
+           <label class="btn btn-primary active" id="mapboxStreets" >
+             <input type="radio" name="basemap" autocomplete="off" checked> Streets
+           </label>
+           <label class="btn btn-primary" id="mapboxHyb">
+             <input type="radio" name="basemap" autocomplete="off"> Imagery
+           </label>
+         </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="map-container">
+      <div class="crosshair" id="crosshair"></div>
+      <div class="map" id="map"></div>
+    </div>
+
+    <div class="form-container">
+      <form class="ws-validate" id="form" method="post" action="" enctype="multipart/form-data">
+        <div class="card">
+          <div class="card-header">
+            <strong>Location</strong>
+            <span class="text-muted pull-right">
+              <em>Drag map to adjust location</em>
+            </span>
+          </div>
+          <div class="card-block">
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <label for="latitude">Latitude:</label>
+                  <input type="number" step="any" class="form-control" name="latitude" id="latitude">
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <label for="longitude">Longitude:</label>
+                  <input type="number" step="any" class="form-control" name="longitude" id="longitude">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="form-fields"></div>
+        <div class="container">
+          <p><button type="submit" class="btn btn-primary btn-lg btn-block" id="submit-btn">Submit Form</button></p>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal fade" id="login-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Sign in<span class="pull-right"><i class="fa fa-sign-in"></i></span></h4>
+          </div>
+          <div class="modal-body">
+            <form role="form">
+              <fieldset>
+                <div class="form-group">
+                  <label for="name">Username</label>
+                  <input type="text" class="form-control" id="email">
+                </div>
+                <div class="form-group">
+                  <label for="email">Password</label>
+                  <input type="password" class="form-control" id="password">
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary pull-right" id="login-btn">&nbsp;Sign in</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="about-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">About</h4>
+          </div>
+          <div class="modal-body">
+            Fulcrum GeoBooze is a simple, responsive web application built on the popular open source <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> and <a href="http://leafletjs.com/" target="_blank">Leaflet</a> frameworks. This application demonstrates a lightweight, entirely client-side, form based front-end for submitting data to the <a href="http://www.fulcrumapp.com/" target="_blank">Fulcrum</a> data collection platform via the <a href="http://developer.fulcrumapp.com/api/intro/" target="_blank">Fulcrum API</a>.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="loading-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body" style="padding: 0px;">
+            <div class="alert alert-info" role="alert" style="margin-bottom: 0px;">
+              <h4 class="alert-heading">Uploading...<span class="pull-right"><i class="fa fa-refresh fa-spin"></i></span></h4>
+              <p>Your GeoBooze submission is uploading to the server. Please be patient and have a few sips while you wait. <i class="fa fa-beer"></i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/vendor/jquery-2.2.4.min.js"></script>
+    <script src="assets/vendor/bootstrap-v4-alpha2/js/tether.min.js"></script>
+    <script src="assets/vendor/bootstrap-v4-alpha2/js/bootstrap.min.js"></script>
+    <script src="assets/vendor/leaflet-0.7.7/leaflet.js"></script>
+    <script src="assets/vendor/leaflet-locate-0.52.0/L.Control.Locate.min.js"></script>
+    <script src="assets/vendor/webshim-1.15.10/polyfiller.js"></script>
+    <script src="assets/js/app.js"></script>
+
+  </body>
+</html>

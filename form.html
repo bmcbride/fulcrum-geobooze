@@ -1,0 +1,115 @@
+<div class="card">
+  <div class="card-header">
+    <strong>General Info</strong>
+  </div>
+  <div class="card-block">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="post_to_slack">Post to Slack?</label>
+          <select class="form-control" name="post_to_slack" data-errormessage='{"valueMissing": "This is a required field"}' required>
+            <option value="yes" selected>Oh yeah!</option>
+            <option value="no">Nah</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input type="date" class="form-control" name="date">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="time">Time</label>
+          <input type="time" class="form-control" name="time">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <strong>Beer Info</strong>
+  </div>
+  <div class="card-block">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label class="col-form-label" for="name">Name</label>
+          <input class="form-control" type="text" name="name" data-errormessage='{"valueMissing": "This is a required field"}' required>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="brewery">Brewery</label>
+          <input class="form-control" type="text" name="brewery">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="beer_type_value">Beer Type</label>
+          <input class="form-control" type="text" name="beer_type_value" list="beers">
+          <datalist id="beers">
+            <select>
+              <option value="Lager">Lager</option>
+              <option value="Ale">Ale</option>
+              <option value="IPA">IPA</option>
+              <option value="Stout">Stout</option>
+            </select>
+          </datalist>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="abv">ABV</label>
+          <input class="form-control" type="number" min="0" max="100" step="0.1" name="abv">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="venue">Venue</label>
+          <input class="form-control" type="text" name="venue">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="rating">Rating</label>
+          <select class="form-control" name="rating">
+            <option value="" disabled selected>Select a rating</option>
+            <option value="1">★☆☆☆☆</option>
+            <option value="2">★★☆☆☆</option>
+            <option value="3">★★★☆☆</option>
+            <option value="4">★★★★☆</option>
+            <option value="5">★★★★★</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="comments">Comments</label>
+          <textarea class="form-control" rows="3" name="comments"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="photo">Photo</label>
+          <input type="file" class="form-control-file" id="photo" name="photo" accept="image/*">
+        </div>
+        <img src="" class="img-fluid img-rounded hidden" id="photo-preview">
+      </div>
+    </div>
+  </div>
+</div>
