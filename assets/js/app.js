@@ -277,12 +277,12 @@ app = {
     layers: {
       mapboxStreets: L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYnJ5bWNicmlkZSIsImEiOiJXN1NuOFFjIn0.3YNvR1YOvqEdeSsJDa-JUw', {
         maxZoom: 18,
-        attribution: "Map data &copy; <a href='http://openstreetmap.org'>OpenStreetMap</a> contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='http://mapbox.com'>Mapbox</a>"
+        attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
       }),
 
       mapboxHyb: L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYnJ5bWNicmlkZSIsImEiOiJXN1NuOFFjIn0.3YNvR1YOvqEdeSsJDa-JUw', {
         maxZoom: 18,
-        attribution: "Map data &copy; <a href='http://openstreetmap.org'>OpenStreetMap</a> contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='http://mapbox.com'>Mapbox</a>"
+        attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
       })
     },
 
@@ -322,15 +322,28 @@ app = {
           maximumAge: 10000,
           timeout: 10000
         }
+      }),
+
+      fullscreenControl: L.control.fullscreen({
+        position: "topright"
       })
     },
 
     configMap: function() {
       app.map = L.map("map", {
         layers: [this.layers.mapboxStreets],
-        zoomControl: false,
-        attributionControl: false
+        zoomControl: false
       }).fitWorld();
+
+      app.map.attributionControl.setPrefix("");
+
+      app.map.on("fullscreenchange", function(e) {
+        if (app.map.isFullscreen()) {
+          $(".crosshair").css("z-index", 9999999999);
+        } else {
+          $(".crosshair").css("z-index", "");
+        }
+    	});
 
       app.map.on("moveend", function(e) {
         $("#latitude").val(app.map.getCenter().lat.toFixed(6));
@@ -338,6 +351,8 @@ app = {
     	});
 
       this.controls.locateCtrl.addTo(app.map).start();
+
+      this.controls.fullscreenControl.addTo(app.map);
     }
   }
 };
