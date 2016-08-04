@@ -38,6 +38,9 @@ body {
 .hidden {
   display: none;
 }
+.navbar-dark .navbar-toggler {
+  color: #fff;
+}
 .btn-block+.btn-block {
   margin-top: 15px;
 }
